@@ -20,52 +20,53 @@
                 <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="../home.php">Trang chủ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.php">Trang ngoài</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../category/category.php">Thể loại</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active fw-bold" href="author.php">Tác giả</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../article/article.php">Bài viết</a>
-                    </li>
-                </ul>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="../home.php">Trang chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.php">Trang ngoài</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../category/category.php">Thể loại</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active fw-bold" href="author.php">Tác giả</a> <!-- Đặt active cho tác giả -->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../article/article.php">Bài viết</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
-
     </header>
+
     <main class="container mt-5 mb-5">
         <div class="row">
             <div class="col-sm">
-            <h3 class="text-center text-uppercase fw-bold">Sửa thông tin tác giả</h3>
-                <form action="http://localhost:3000/index.php?controller=Author&action=update" method="post">
+                <h3 class="text-center text-uppercase fw-bold">Sửa thông tin tác giả</h3> <!-- Thay đổi tiêu đề -->
+                <form action="http://localhost:3000/index.php?controller=Author&action=update" method="post"> <!-- Cập nhật URL -->
                     <div class="input-group mt-3 mb-3">
-                        <span class="input-group-text" id="lblAuthorId">Mã tác giả</span>
-                        <input type="text" class="form-control" name="ma_tgia" readonly value="<?= $author->get_matgia(); ?>">
+                        <span class="input-group-text" id="lblAuthorId">Mã tác giả</span> <!-- Thay đổi nhãn -->
+                        <input type="text" class="form-control" name="ma_tgia" readonly value="<?= $author->get_matgia(); ?>"> <!-- Cập nhật name và giá trị -->
                     </div>
 
                     <div class="input-group mt-3 mb-3">
-                        <span class="input-group-text" id="lblAuthorName">Tên tác giả</span>
-                        <input type="text" class="form-control" name="ten_tgia" value="<?= $author->get_tentgia(); ?>" required>
+                        <span class="input-group-text" id="lblAuthorName">Tên tác giả</span> <!-- Thay đổi nhãn -->
+                        <input type="text" class="form-control" name="ten_tgia" value="<?= $author->get_ten_tgia(); ?>" required> <!-- Cập nhật name và giá trị -->
                     </div>
 
                     <div class="form-group float-end">
                         <input type="submit" value="Lưu lại" class="btn btn-success">
-                        <a href="http://localhost:3000/index.php?controller=Author&action=index" class="btn btn-warning">Quay lại</a>
+                        <a href="http://localhost:3000/index.php?controller=Author&action=index" class="btn btn-warning">Quay lại</a> <!-- Cập nhật URL -->
                     </div>
-                    </form>
+                </form>
             </div>
         </div>
     </main>
-    <footer class="bg-white d-flex justify-content-center align-items-center border-top border-secondary  border-2" style="height:80px">
+
+    <footer class="bg-white d-flex justify-content-center align-items-center border-top border-secondary border-2" style="height:80px">
         <h4 class="text-center text-uppercase fw-bold">TLU's music garden</h4>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
