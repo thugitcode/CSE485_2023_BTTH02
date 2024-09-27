@@ -46,59 +46,50 @@
     <main class="container mt-5 mb-5">
         <div class="row">
             <div class="col-sm">
-                <a href="add_article.php" class="btn btn-success">Thêm mới</a>
+                <a href="http://localhost:3000/index.php?controller=Article&action=create" class="btn btn-success">Thêm mới</a>
                 <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Tiêu đề</th>
-                            <th scope="col">Tên bài hát</th>
-                            <th scope="col">Thể loại</th>
-                            <th scope="col">Tóm tắt</th>
-                            <th scope="col">Tác giả</th>
-                            <th scope="col">Ngày viết</th>
-                            <th>Sửa</th>
-                            <th>Xóa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($articles as $article): ?>
-                        <tr>
-                            <td scope="row"><?php echo $article->getMaBaiViet(); ?></td>
-                            <td><?php echo $article->getTieuDe(); ?></td>
-                            <td><?php echo $article->getTenBaiHat(); ?></td>
-                            <td><?php echo $article->getMaTheLoai(); ?></td>
-                            <td><?php echo $article->getTomTat(); ?></td>
-                            <td><?php echo $article->getMaTacGia(); ?></td>
-                            <td><?php echo $article->getNgayViet(); ?></td>
-                            <td><a href="http://localhost:3000/index.php?controller=Article&action=edit&ma_bviet=<?php echo $article->getMaBaiViet(); ?>"><i class="fa-solid fa-pen-to-square"></i></a></td>
-                            <td>
-                                <form action="http://localhost:3000/index.php?controller=Article&action=delete" method="post" style="display:inline;">
-                                    <input type="hidden" name="ma_bviet" value="<?= $category->getMaBaiViet(); ?>">
-                                    <button type="submit" class="btn btn-link" onclick="return confirm('Bạn có chắc chắn muốn xóa bai viet này không?');">
-                                        <i class='fas fa-trash'></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Cây và gió</td>
-                            <td>Cây và gió</td>
-                            <td>Nhạc trữ tình</td>
-                            <td>Em và anh, hai đứa quen nhau thật tình cờ. Lời hát của anh từ bài hát “Cây và gió” đã làm tâm hồn em xao động. Nhưng sự thật phũ phàng rằng em chưa bao giờ nói cho anh biết những suy nghĩ tận sâu trong tim mình. Bởi vì em nhút nhát, em không dám đối mặt với thực tế khắc nghiệt, hay thực ra em không dám đối diện với chính mình.</td>
-                            <td>Nguyễn Văn Giả</td>
-                            <td>05/12/2013</td>
-                            <td>
-                                <a href="edit_article.php"><i class="fa-solid fa-pen-to-square"></i></a>
-                            </td>
-                            <td>
-                                <a href="delete_article.php"><i class="fa-solid fa-trash"></i></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+    <thead>
+        <tr>
+            <th scope="col">Mã bài viết</th>
+            <th scope="col">Tiêu đề</th>
+            <th scope="col">Tên bài hát</th>
+            <th scope="col">Thể loại</th>
+            <th scope="col">Tóm tắt</th>
+            <th scope="col">Tác giả</th>
+            <th scope="col">Ngày viết</th>
+            <th scope="col">Sửa</th>
+            <th scope="col">Xóa</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($articles as $article): ?>
+            <tr>
+                <td scope="row"><?php echo $article->getMaBaiViet(); ?></td>
+                <td><?php echo $article->getTieuDe(); ?></td>
+                <td><?php echo $article->getTenBaiHat(); ?></td>
+                <td><?php echo $article->getMaTheLoai(); ?></td>
+                <td><?php echo $article->getTomTat(); ?></td>
+                <td><?php echo $article->getMaTacGia(); ?></td>
+                <td><?php echo $article->getNgayViet(); ?></td>
+                <td>
+                    <a href="http://localhost:3000/index.php?controller=Article&action=edit&ma_bviet=<?php echo $article->getMaBaiViet(); ?>">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                </td>
+                <td>
+                <form action="index.php?controller=Article&action=delete" method="post" style="display:inline;">
+                    <input type="hidden" name="ma_bviet" value="<?php echo htmlspecialchars($article->getMaBaiViet()); ?>">
+                    <button type="submit" class="btn btn-link" onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+                </td>
+
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
             </div>
         </div>
     </main>
