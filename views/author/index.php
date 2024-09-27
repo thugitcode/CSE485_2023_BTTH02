@@ -59,7 +59,7 @@
                             <?php foreach ($authors as $author): ?>
                                 <tr>
                                     <th scope="row"><?= $author->get_matgia(); ?></th>
-                                    <td><?= $author->get_tentgia(); ?></td>
+                                    <td><?= $author->get_ten_tgia(); ?></td>
                                     <td>
                                         <a href="http://localhost:3000/index.php?controller=Author&action=edit&ma_tgia=<?= $author->get_matgia(); ?>"><i class='fas fa-edit'></i></a>
                                     </td>
