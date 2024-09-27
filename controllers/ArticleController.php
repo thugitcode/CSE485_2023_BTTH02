@@ -1,113 +1,105 @@
 <?php
-    include_once("services/ArticleService.php");
+include("services/ArticleService.php");
 
-    class ArticleController{
+class ArticleController {
+    private $articleService;
 
-    public function add(){
-        $error = '';
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Xử lý dữ liệu form từ POST và gọi service thêm bài viết
-            $tieude = $_POST['tieude']; // Check if key exists, then get value
-            $ten_bhat = $_POST['ten_bhat'];
-            $ten_tloai = $_POST['ten_tloai'];
-            $tomtat = $_POST['tomtat'];
-            $ten_tgia = $_POST['ten_tgia'];
-            $ngayviet = $_POST['ngayviet'];
-
-            // Gọi service thêm bài viết (giả sử có ArticleService)
-            $articleService = new ArticleService();
-            if ($articleService->isArticleExist($tieude, $ten_bhat, $ten_tloai, $tomtat, $ten_tgia, $ngayviet)) {
-                $error = 'Bai viet đã tồn tại.';
-            } else {
-                $article = $articleService->addArticle($tieude, $ten_bhat, $ten_tloai, $tomtat, $ten_tgia, $ngayviet);
-
-                header('Location: http://localhost:3000/index.php?controller=Article&action=index'); // Chuyển hướng về danh sách thể loại
-                exit();
-            }
-        } 
-            // Hiển thị form thêm bài viết
-            include("views/article/add_article.php");
-        }
-
-    public function index(){
-        // Tạo đối tượng của ArticleService
-        $articleService = new ArticleService();
-
-        // Gọi hàm lấy danh sách tất cả các bài viết
-        $articles = $articleService->getAllArticles();
-
-        // Kiểm tra xem có bài viết nào được trả về hay không
-        if ($articles === null || empty($articles)) {
-            // Nếu không có bài viết nào, thông báo lỗi hoặc thiết lập biến rỗng
-            $articles = [];
-            $message = "Không có bài viết nào.";
-        } else {
-            $message = ""; // Không có lỗi
-        }
-
-        // Gửi danh sách bài viết và thông báo đến view để hiển thị
-        include("views/article/index.php");
+    public function __construct() {
+        $this->articleService = new ArticleService();
     }
-    public function edit($ma_bviet) {
-        if(isset($_GET['ma_bviet']))
-        $articleService = new ArticleService();
-        $article = $articleService->getArticleById($ma_bviet);
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Xử lý dữ liệu form từ POST và gọi service cập nhật bài viết
-            $tieude = $_POST['tieude']; // Check if key exists, then get value
+    // Display all articles
+    public function index() {
+        $articles = $this->articleService->getAllArticles();
+        include 'views/article/index.php';
+    }
+
+    // Show a single article by ID
+    public function show($ma_bviet) {
+        $article = $this->articleService->getArticleById($ma_bviet);
+        include 'views/article/show.php';
+    }
+
+    // Show form to create a new article
+    public function create() {
+        $categories = $this->articleService->getAllCategories();
+        $authors = $this->articleService->getAllAuthors();
+        include 'views/article/add_article.php';
+    }
+
+    // Store a new article
+    public function store() {
+        if (isset($_POST['tieude'], $_POST['ten_bhat'], $_POST['ma_tloai'], $_POST['tomtat'], $_POST['noidung'], $_POST['ma_tgia'], $_POST['ngayviet'])) {
+            $tieude = $_POST['tieude'];
             $ten_bhat = $_POST['ten_bhat'];
-            $ten_tloai = $_POST['ten_tloai'];
+            $ma_tloai = $_POST['ma_tloai'];
             $tomtat = $_POST['tomtat'];
             $noidung = $_POST['noidung'];
-            $ten_tgia = $_POST['ten_tgia'];
+            $ma_tgia = $_POST['ma_tgia'];
             $ngayviet = $_POST['ngayviet'];
-
-
-            // Cập nhật bài viết
-            $articleService->updateArticle($tieude, $ten_bhat, $ten_tloai, $tomtat, $noidung, $ten_tgia, $ngayviet);
-
-            // Chuyển hướng về trang danh sách
-            header("Location: index.php?controller=article&action=list");
-        } else {
-            // Lấy thông tin bài viết theo ID để hiển thị
-            $article = $articleService->getArticleById($ma_bviet);
-
-            // Hiển thị form chỉnh sửa bài viết
-            include("views/article/edit_article.php");
-        }
-    }
-
-    public function update(){
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+            // Gọi service để thêm bài viết mới
             $articleService = new ArticleService();
-            // Xử lý dữ liệu form từ POST và gọi service cập nhật bài viết
-            $articleService->updateArticle($_POST['tieude'],
-                                            $_POST['ten_bhat'],
-                                            $_POST['ten_tloai'],
-                                            $_POST['tomtat'],
-                                            $_POST['noidung'],
-                                            $_POST['ten_tgia'],
-                                            $_POST['ngayviet']);
-            header('Location: http://localhost:3000/index.php?controller=Article&action=index'); // Chuyển hướng về trang index sau khi cập nhật thành công
-            exit();
-        } else {
-            include("views/article/update_article.php");
+            $articleService->createArticle($tieude, $ten_bhat, $ma_tloai, $tomtat, $noidung, $ma_tgia, $ngayviet);
+    
+            // Điều hướng về trang danh sách bài viết sau khi thêm
+            header("Location: index.php?controller=Article&action=index");
         }
     }
 
-    // Hàm xóa bài viết
-    public function delete($ma_bviet) {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $articleService = new ArticleService();
-            // Xử lý dữ liệu form từ POST và gọi service cập nhật bài viết
-            $articleService->deleteArticle($_POST['ma_bviet']);
-                                            
-            header('Location: http://localhost:3000/index.php?controller=Article&action=index'); // Chuyển hướng về trang index sau khi cập nhật thành công
-            exit();
+    // Edit an article
+    public function edit() {
+        if (isset($_GET['ma_bviet'])) {
+            $ma_bviet = $_GET['ma_bviet'];
+            $article = $this->articleService->getArticleById($ma_bviet);
+    
+            if ($article) {
+                $categories = $this->articleService->getAllCategories();
+                $authors = $this->articleService->getAllAuthors(); // Fetch categories here
+                include 'views/article/edit_article.php';
+            } else {
+                echo "Không tìm thấy bài viết!";
+            }
         } else {
-            include("views/article/list_article.php");
+            echo "Mã bài viết không tồn tại!";
         }
     }
+    
+    // Update an article
+    public function update() {
+        if (isset($_POST['ma_bviet'])) {
+            $ma_bviet = $_POST['ma_bviet'];
+            $tieude = $_POST['tieude'];
+            $ten_bhat = $_POST['ten_bhat'];
+            $ma_tloai = $_POST['ma_tloai'];
+            $tomtat = $_POST['tomtat'];
+            $noidung = $_POST['noidung'];
+            $ngayviet = $_POST['ngayviet'];
+            $ma_tgia = $_POST['ma_tgia']; // Thêm biến ma_tgia
+    
+            // Gọi service để cập nhật bài viết
+            $articleService = new ArticleService();
+            $articleService->updateArticle($ma_bviet, $tieude, $ten_bhat, $ma_tloai, $tomtat, $noidung, $ma_tgia, $ngayviet);
+    
+            // Điều hướng về trang danh sách bài viết sau khi cập nhật
+            header("Location: index.php?controller=Article&action=index");
+        }
+    }
+
+    // Delete an article
+    public function delete() {
+        if (isset($_POST['ma_bviet'])) {
+            $ma_bviet = $_POST['ma_bviet'];
+            
+            // Gọi service để xóa bài viết
+            $this->articleService->deleteArticle($ma_bviet);
+    
+            // Điều hướng về trang danh sách bài viết sau khi xóa
+            header("Location: index.php?controller=Article&action=index");
+        } else {
+            echo "Mã bài viết không tồn tại!";
+        }
+    }
+
 }
 ?>
