@@ -1,8 +1,7 @@
 <?php
 include("configs\DBConnection.php");
-include("models\AuthorModel.php"); 
-
-class AuthorService {
+include("models\AuthorModel.php");
+class AuthorService{
     private static $conn = null;
 
     private static function getConnection() {
@@ -12,30 +11,30 @@ class AuthorService {
         }
         return self::$conn;
     }
-
-    public function getAllAuthors() {
+    public function getAllAuthors(){
         // 4 bước thực hiện
         $conn = self::getConnection();
 
         // B2. Truy vấn
-        $sql = "SELECT * FROM tacgia ORDER BY ma_tgia DESC"; 
+        $sql = "SELECT * FROM tacgia order by ma_tgia desc";
         $stmt = $conn->query($sql);
 
         // B3. Xử lý kết quả
         $authors = [];
-        while($row = $stmt->fetch()) {
-            $author = new Author($row['ma_tgia'], $row['ten_tgia']); 
-            $authors[] = $author;
+        while($row = $stmt->fetch()){
+            $author= new Author($row['ma_tgia'], $row['ten_tgia']);
+        $authors[] = $author;
         }
-        // Mảng (danh sách) các đối tượng Author Model
+        // Mảng (danh sách) các đối tượng 
 
         return $authors;
     }
 
+    
     public function isAuthorExist($ten_tgia) {
         $conn = self::getConnection();
 
-        $query = "SELECT COUNT(*) as count FROM tacgia WHERE ten_tgia = :ten_tgia"; 
+        $query = "SELECT COUNT(*) as count FROM tacgia WHERE ten_tgia = :ten_tgia";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':ten_tgia', $ten_tgia);
         $stmt->execute();
@@ -48,42 +47,42 @@ class AuthorService {
     public function addAuthor($ten_tgia) {
         $conn = self::getConnection();
 
-        $sql = "INSERT INTO tacgia(ten_tgia) VALUES (?)"; 
+        $sql = "INSERT INTO tacgia(ten_tgia) VALUES (?)";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$ten_tgia]);
 
         return $conn->lastInsertId();
     }
-
-    // Lấy thông tin tác giả theo mã
+    
+    //lấy tt thể loại theo mã
     public function getAuthorById($ma_tgia) {
         $conn = self::getConnection();
-
-        $sql = "SELECT * FROM tacgia WHERE ma_tgia = :ma_tgia"; 
+    
+        $sql = "SELECT * FROM tacgia WHERE ma_tgia = :ma_tgia";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':ma_tgia', $ma_tgia);
         $stmt->execute();
-
+    
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        
         if ($result) {
-            return new Author($result['ma_tgia'], $result['ten_tgia']); // Trả về đối tượng Author
+            return new Author($result['ma_tgia'], $result['ten_tgia']); // Trả về đối tượng Category
         }
-
+        
         return null; // Trả về null nếu không tìm thấy
     }
-
+    
     public function updateAuthor($ma_tgia, $ten_tgia) {
         $conn = self::getConnection();
 
-        $stmt = $conn->prepare("UPDATE tacgia SET ten_tgia = ? WHERE ma_tgia = ?"); 
+        $stmt = $conn->prepare("UPDATE tacgia SET ten_tgia = ? WHERE ma_tgia = ?");
         $stmt->execute([$ten_tgia, $ma_tgia]);
     }
 
     public function deleteAuthor($ma_tgia) {
         $conn = self::getConnection();
 
-        $stmt = $conn->prepare("DELETE FROM tacgia WHERE ma_tgia = ?"); 
+        $stmt = $conn->prepare("DELETE FROM tacgia WHERE ma_tgia = ?");
         $stmt->execute([$ma_tgia]);
     }
 }
